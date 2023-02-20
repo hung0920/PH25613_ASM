@@ -1,4 +1,7 @@
-import { View, Text, Image, Button, StyleSheet } from "react-native";
+import {
+    View, Text, Image, Button, StyleSheet, ImageBackground, Pressable
+    , TouchableOpacity
+} from "react-native";
 
 const InfoScreen = (props) => {
 
@@ -10,7 +13,9 @@ const InfoScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <Image style={styles.img} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            <ImageBackground style={styles.imgBgTop}>
+                <Image style={styles.img} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            </ImageBackground>
             <View style={styles.infoContainer}>
                 <View style={styles.textContainer}>
                     <Text style={styles.textHeader}>Họ tên</Text>
@@ -21,7 +26,11 @@ const InfoScreen = (props) => {
                     <Text style={styles.text}>PH25613</Text>
                 </View>
             </View>
-            <Button style={styles.btn} title="Store" onPress={() => changeScreen('Store')} />
+            <TouchableOpacity
+                onPress={() => changeScreen("Store")}>
+                <Image style={styles.imgBackground}
+                    source={require('../../assets/shop.png')} />
+            </TouchableOpacity>
         </View>
     );
 }
@@ -29,19 +38,36 @@ const InfoScreen = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 16,
         alignItems: 'center',
+        backgroundColor: '#Edeef1'
     },
     infoContainer: {
         backgroundColor: '#fff',
-        marginVertical: 16,
-        borderRadius: 16,
+        marginVertical: 64,
+        borderRadius: 8,
     },
     img: {
-        width: 90,
-        height: 90,
+        width: 120,
+        height: 120,
         borderRadius: 100,
 
+    },
+    pressable: {
+        width: '100%',
+        height: '100%'
+    },
+    imgBackground: {
+        width: 90,
+        height: 90,
+        backgroundColor: '#C0EEF2',
+        borderRadius: 20,
+    },
+    imgBgTop:{
+        width: '100%',
+        height: 160,
+        backgroundColor: '#4cd64c',
+        paddingTop:90,
+        alignItems: 'center',
     },
     textContainer: {
         borderBottomWidth: 1,
@@ -56,7 +82,7 @@ const styles = StyleSheet.create({
     textHeader: {
         fontSize: 32,
         fontWeight: 'bold',
-        paddingBottom:16
+        paddingBottom: 16
     }
 })
 

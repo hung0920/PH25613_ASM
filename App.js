@@ -14,8 +14,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <stack.Navigator>
-        <stack.Screen name="Home" component={HomeScreen} />
-        <stack.Screen name="Info" component={InfoScreen}/>
+        <stack.Screen name="Home" component={HomeScreen} options={{
+          headerShadowVisible:false
+        }} />
+        <stack.Screen name="Info" component={InfoScreen} options={{
+          headerStyle:{
+            backgroundColor:'#4cd64c',
+          },
+          headerTintColor:'#fff',
+          headerShadowVisible:false
+        }}/>
         <stack.Screen name="Store" component={StoreScreen} />
         <stack.Screen name="New" component={NewScreen} />
       </stack.Navigator>

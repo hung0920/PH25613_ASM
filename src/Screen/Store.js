@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Button, StyleSheet, Image, Pressable, ScrollView } from "react-native";
+import { View, Text, FlatList, Button, StyleSheet, Image, Pressable, Alert } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -64,11 +64,23 @@ const StoreScreen = (props) => {
 
 
     const deleteItem = (id) => {
-        const newList = data.filter((item) => {
-            return item.id !== id;
-        });
-        setData(newList);
-        AsyncStorage.setItem('data', JSON.stringify(newList));
+        Alert.alert('Yêu cầu xóa',
+            'Bạn có chắc muốn xóa cửa hàng này không ?', [
+            {
+                text: 'Cancel',
+                onPress: () => { },
+            },
+            {
+                text: 'OK', onPress: () => {
+                    const newList = data.filter((item) => {
+                        return item.id !== id;
+                    });
+                    setData(newList);
+                    AsyncStorage.setItem('data', JSON.stringify(newList));
+                }
+            },
+        ]);
+
     }
 
     return (
@@ -86,16 +98,19 @@ const StoreScreen = (props) => {
                             <Text>Tên cửa hàng: {item.name}</Text>
                             <Text>Địa chỉ: {item.address}</Text>
                             <Text>SDT: {item.phone}</Text>
-                            {item.state === 0 ? <Text>Trạng thái: CLose</Text> : <Text>Trạng thái: Open</Text>}
+                            {item.state == 0 ? <Text style={styles.CloseState}>Trạng thái: CLose</Text> 
+                            : <Text style={styles.OpenState}>Trạng thái: Open</Text>}
                         </View>
                         <View style={styles.pressableContainer}>
-                            <Pressable onPress={() => changeScreen('New', {
-                                id: item.id, name: item.name, address: item.address, phone: item.phone,
-                                logo: item.logo, state: item.state
-                            })}>
+                            <Pressable style={styles.Sua}
+                                onPress={() => changeScreen('New', {
+                                    id: item.id, name: item.name, address: item.address, phone: item.phone,
+                                    logo: item.logo, state: item.state
+                                })}>
                                 <Text>Sửa</Text>
                             </Pressable>
-                            <Pressable onPress={() => deleteItem(item.id)}>
+                            <Pressable style={styles.Xoa}
+                                onPress={() => deleteItem(item.id)}>
                                 <Text>Xóa</Text>
                             </Pressable>
                         </View>
@@ -114,10 +129,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: 10,
         borderRadius: 10,
-        flexDirection: 'row',
         alignItems: 'center',
-        borderWidth:1,
-        },
+        borderWidth: 1,
+        flexDirection: 'row',
+    },
     imageContainer: {
         width: 50,
         height: 50,
@@ -130,15 +145,35 @@ const styles = StyleSheet.create({
         height: 50,
         marginRight: 10,
         borderRadius: 25,
-        },
+    },
     textContainer: {
         flex: 1
     },
+    CloseState:{
+        color:'red',
+    },
+    OpenState:{
+        color:'green',
+    },
     pressableContainer: {
         marginLeft: 8
+    },
+    Sua:{
+        width:60,
+        padding:8,
+        backgroundColor: '#4ce85e',
+        alignItems:'center',
+        borderRadius:16,
+    },
+    Xoa:{
+        width:60,
+        padding:8,
+        backgroundColor: '#Ef1308',
+        alignItems:'center',
+        borderRadius:16,
+        marginTop:8
     }
 });
-
 
 
 export default StoreScreen;
